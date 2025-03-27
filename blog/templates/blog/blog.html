@@ -1,0 +1,38 @@
+{% extends "ProyectoWebApp/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<section class="services-section py-5">
+    <div class="container">
+        <div class="row">
+            {% for post in posts %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="{{ post.imagen.url }}" class="card-img-top" alt="{{ post.nombre }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.titulo }}</h5>
+                        <p class="card-text">{{ post.contenido }}</p>
+                        <p class="card-text">{{ post.autor }}</p>
+                        <p class="card-text">{{ categotia.nombre }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+{% for post in posts %}
+    {% for categoria in post.categorias.all %}
+
+    <a href="{% url 'categoria' categoria.id %}" >{{categoria.nombre}}</a>
+    {% endfor %}
+
+  
+{% endfor %}
+
+
+{% endblock content %}
