@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'ProyectoWebApp',
     'servicios',
     'blog',
+    'contacto',
 ]
 
 MIDDLEWARE = [
@@ -125,3 +126,18 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT  = os.path.join(BASE_DIR, 'media')
+
+
+# Configuracion de Gmail
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_PORT = 587
+#EMAIL_USE_TLS = True
+#EMAIL_HOST_USER = 'tu_correo@gmail.com'  # Reemplaza con tu correo de Gmail
+#EMAIL_HOST_PASSWORD = 'tu_contraseña'  # Reemplaza con la contraseña de tu cuenta de Gmail
+#DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # Esta es la dirección de correo desde la cual se enviará el mensaje
+
+# settings.py
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
