@@ -3,26 +3,23 @@
 {% load static %}
 
 {% block content %}
-<div class="container my-4"></div>
-    <p>Total: {{importe_total_carro}}</p>
-</div>
+    {% include "carro/widget.html" %}
 
 <div class="container py-5">
-    <h1 class="text-center mb-5">Nuestros Productos</h1>
+    <h1 class="text-center mb-5" style="color: white;">Nuestros Productos</h1>
     <div class="row">
         {% for producto in productos %}
         <div class="col-md-3 mb-4">
             <div class="card h-100 shadow-sm border-0">
                 <img src="{{ producto.imagen.url }}" class="card-img-top img-fluid" alt="{{ producto.nombre }}" style="height: 200px; object-fit: cover;">
                 <div class="card-body text-center">
-                    <h5 class="card-title font-weight-bold">{{ producto.nombre }}</h5>
-                    <p class="card-text text-muted">{{ producto.precio }} €</p>
+                    <h5 class="card-title font-weight-bold" style="color: white;">{{ producto.nombre }}</h5>
+                    <p class="card-text text-muted" style="color: white;">{{ producto.precio }} €</p>
                 </div>
             </div>
             <div class="card-footer text-center">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">Agregar al carrito</button>
-                </form>
+                    <a href="{% url 'carro:agregar' producto.id %}" class="btn btn-success"> Agregar</a>
             </div>
         </div>
         {% endfor %}

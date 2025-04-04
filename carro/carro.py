@@ -4,9 +4,9 @@ class Carro:
         self.session = request.session
         carro = self.session.get("carro")
         if not carro:
-            self.carro = self.session["carro"] = {}
-        else:
-            self.carro = carro
+            self.carro = self.session["carro"] = {}  # Inicializa el carrito como un diccionario vacío si no existe
+        else: 
+            self.carro = carro  # Asigna el carrito existente a self.carro
 
     def agregar(self, producto):
         if str(producto.id) not in self.carro.keys():
@@ -19,6 +19,7 @@ class Carro:
             }
         else:
             self.carro[str(producto.id)]["cantidad"] += 1
+            self.carro[str(producto.id)]["precio"] = float(self.carro[str(producto.id)]["precio"]) + float(producto.precio)
         self.guardar_carro()
 
     def guardar_carro(self):
@@ -35,6 +36,7 @@ class Carro:
         for key, value in self.carro.items():
             if key == str(producto.id):
                 value["cantidad"] -= 1
+                self.carro[str(producto.id)]["precio"] = float(self.carro[str(producto.id)]["precio"]) - float(producto.precio)
                 if value["cantidad"] < 1:
                     self.eliminar(producto)
                 break
