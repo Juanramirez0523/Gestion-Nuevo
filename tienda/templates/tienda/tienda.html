@@ -3,7 +3,12 @@
 {% load static %}
 
 {% block content %}
-    {% include "carro/widget.html" %}
+
+    {% if request.user.is_authenticated %}
+        {% include "carro/widget.html" %}
+    {% else %}
+        Haz Login
+    {% endif %}
 
 <div class="container py-5">
     <h1 class="text-center mb-5" style="color: white;">Nuestros Productos</h1>

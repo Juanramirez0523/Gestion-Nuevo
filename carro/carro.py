@@ -2,24 +2,26 @@ class Carro:
     def __init__(self, request):
         self.request = request
         self.session = request.session
+        # Obtener el carrito de la sesión, si no existe, inicializarlo vacío
         carro = self.session.get("carro")
         if not carro:
-            self.carro = self.session["carro"] = {}  # Inicializa el carrito como un diccionario vacío si no existe
-        else: 
-            self.carro = carro  # Asigna el carrito existente a self.carro
+            self.carro = self.session["carro"] = {}
+        else:
+            self.carro = carro  # Asignar el carrito existente a self.carro
 
     def agregar(self, producto):
-        if str(producto.id) not in self.carro.keys():
-            self.carro[producto.id] = {
+        producto_id = str(producto.id)  # Asegurarse de usar str para la clave
+        if producto_id not in self.carro:
+            self.carro[producto_id] = {
                 "producto_id": producto.id,
                 "nombre": producto.nombre,
-                "precio": str(producto.precio),
+                "precio": str(producto.precio),  # Convertir precio a string
                 "cantidad": 1,
                 "imagen": producto.imagen.url,
             }
         else:
-            self.carro[str(producto.id)]["cantidad"] += 1
-            self.carro[str(producto.id)]["precio"] = float(self.carro[str(producto.id)]["precio"]) + float(producto.precio)
+            self.carro[producto_id]["cantidad"] += 1
+            self.carro[producto_id]["precio"] = float(self.carro[producto_id]["precio"]) + float(producto.precio)
         self.guardar_carro()
 
     def guardar_carro(self):
@@ -27,19 +29,18 @@ class Carro:
         self.session.modified = True
 
     def eliminar(self, producto):
-        producto.id = str(producto.id)
-        if producto.id in self.carro:
-            del self.carro[producto.id]
+        producto_id = str(producto.id)  # Asegurarse de usar str para la clave
+        if producto_id in self.carro:
+            del self.carro[producto_id]
             self.guardar_carro()
 
     def restar_producto(self, producto):
-        for key, value in self.carro.items():
-            if key == str(producto.id):
-                value["cantidad"] -= 1
-                self.carro[str(producto.id)]["precio"] = float(self.carro[str(producto.id)]["precio"]) - float(producto.precio)
-                if value["cantidad"] < 1:
-                    self.eliminar(producto)
-                break
+        producto_id = str(producto.id)  # Asegurarse de usar str para la clave
+        if producto_id in self.carro:
+            self.carro[producto_id]["cantidad"] -= 1
+            self.carro[producto_id]["precio"] = float(self.carro[producto_id]["precio"]) - float(producto.precio)
+            if self.carro[producto_id]["cantidad"] < 1:
+                self.eliminar(producto)  # Eliminar si la cantidad es menor que 1
         self.guardar_carro()
 
     def limpiar_carro(self):
